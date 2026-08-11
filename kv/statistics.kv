@@ -1,0 +1,239 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<StatisticsScreen>
+
+    BoxLayout:
+        orientation: "vertical"
+
+        # ==========================
+        # Fixed Header
+        # ==========================
+
+        Label:
+            text: "Progress Details"
+            font_size: sp(25)
+            bold: True
+            size_hint_y: None
+            height: dp(60)
+
+        # ==========================
+        # Scrollable Content
+        # ==========================
+
+        ScrollView:
+
+            BoxLayout:
+                orientation: "vertical"
+                padding: dp(20)
+                spacing: dp(20)
+                size_hint_y: None
+                height: self.minimum_height
+
+                # ==========================
+                # Progress Card
+                # ==========================
+
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: dp(15)
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(130)
+
+                    canvas.before:
+                        Color:
+                            rgba: .15, .15, .15, 1
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15]
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(35)
+
+                        Label:
+                            text: "Today's Progress"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: progress
+                            text: "0 %"
+                            bold: True
+                            halign: "right"
+                            text_size: self.size
+
+                    ProgressBar:
+                        max: 100
+                        value: float(progress.text.replace("%","").strip() or "0")
+
+                # ==========================
+                # Statistics Card
+                # ==========================
+
+                GridLayout:
+                    cols: 1
+                    spacing: dp(8)
+                    padding: dp(15)
+                    size_hint_y: None
+                    height: dp(250)
+
+                    canvas.before:
+                        Color:
+                            rgba: .15, .15, .15, 1
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15]
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Total Tasks"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: total_tasks
+                            text: "0"
+                            halign: "right"
+                            text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Completed Today"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: completed_today
+                            text: "0 / 0"
+                            halign: "right"
+                            text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Total Completions"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: total_completed
+                            text: "0"
+                            halign: "right"
+                            text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Fixed Tasks"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: fixed_tasks
+                            text: "0"
+                            halign: "right"
+                            text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Growing Tasks"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: growing_tasks
+                            text: "0"
+                            halign: "right"
+                            text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Current Streak"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: current_streak
+                            text: "0 Days"
+                            halign: "right"
+                            text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            text: "Best Streak"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: best_streak
+                            text: "0 Days"
+                            halign: "right"
+                            text_size: self.size
+
+                # ==========================
+                # Highest Growing Task
+                # ==========================
+
+                BoxLayout:
+                    orientation: "vertical"
+                    padding: dp(15)
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: dp(90)
+
+                    canvas.before:
+                        Color:
+                            rgba: .15, .15, .15, 1
+
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [15]
+
+                    Label:
+                        text: "Highest Growing Task"
+                        bold: True
+                        halign: "left"
+                        text_size: self.size
+
+                    BoxLayout:
+
+                        Label:
+                            id: highest_task
+                            text: "None"
+                            halign: "left"
+                            text_size: self.size
+
+                        Label:
+                            id: highest_target
+                            text: "Target : 0"
+                            halign: "right"
+                            text_size: self.size
+
+                # Extra spacing so the last card isn't too close
+                Widget:
+                    size_hint_y: None
+                    height: dp(10)
+
+        # ==========================
+        # Fixed Bottom Button
+        # ==========================
+
+        Button:
+            text: "Back"
+            size_hint_y: None
+            height: dp(55)
+
+            on_release:
+                root.manager.current = "dashboard"

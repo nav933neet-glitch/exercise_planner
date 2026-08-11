@@ -1,0 +1,75 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<DashboardScreen>:
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(10)
+        spacing: dp(10)
+
+        # --------------------
+        # Header
+        # --------------------
+
+        Label:
+            text: "My Daily Task"
+            font_size: sp(28)
+            size_hint_y: None
+            height: dp(50)
+
+        # --------------------
+        # Scrollable Area
+        # --------------------
+
+        ScrollView:
+
+            BoxLayout:
+                orientation: "vertical"
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
+
+                Label:
+                    text: "Fixed Tasks"
+                    size_hint_y: None
+                    height: dp(35)
+
+                BoxLayout:
+                    id: fixed_container
+                    orientation: "vertical"
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+                Label:
+                    text: "Growing Tasks"
+                    size_hint_y: None
+                    height: dp(35)
+
+                BoxLayout:
+                    id: growing_container
+                    orientation: "vertical"
+                    spacing: dp(10)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+        # --------------------
+        # Floating Button
+        # --------------------
+
+        Button:
+            text: "+ Add Task"
+            size_hint_y: None
+            height: dp(55)
+
+            on_release:
+                root.add_task()
+
+        Button:
+            text: "Progress Details"
+            size_hint_y: None
+            height: dp(50)
+
+            on_release:
+                root.open_statistics()

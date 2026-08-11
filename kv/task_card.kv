@@ -1,0 +1,68 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<TaskCard>:
+    orientation: "vertical"
+    spacing: dp(8)
+    padding: dp(10), dp(10)
+    size_hint_y: None
+    height: dp(100)
+    canvas.before:
+        Color:
+            rgba: .6,.6,.6,1
+
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [15]
+
+    BoxLayout:
+        orientation: "horizontal"
+        padding: dp(25)
+
+        Label:
+            text: root.title.title()
+            size_hint_x: None
+            font_size: sp(20)
+            width: self.texture_size[0]
+
+        Widget:
+
+        Label:
+            text: "Target : {} - {}".format(root.target, root.unit)
+            size_hint_x: None
+            width: self.texture_size[0]
+
+        Widget:
+
+        Label:
+            text: root.growth
+            size_hint_x: None
+            width: self.texture_size[0]
+
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(35)
+        spacing: dp(5)
+
+        Button:
+            text: "Done"
+            on_release:
+                root.show_complete_popup()
+
+        Button:
+            text: "Edit"
+            on_release:
+                root.edit_task()
+
+        Button:
+            text: "Delete"
+            on_release:
+                root.show_delete_popup()
+
+        Button:
+            text: "Completed" if root.completed else "Pending"
+            disabled: root.completed
+            on_release:
+                root.show_complete_popup()

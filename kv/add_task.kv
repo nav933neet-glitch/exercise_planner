@@ -1,0 +1,57 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<AddTaskScreen>:
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(12)
+
+        Label:
+            text: "Add New Task"
+            font_size: sp(26)
+            size_hint_y: None
+            height: dp(40)
+
+        TextInput:
+            id: task_name
+            hint_text: "Task Name"
+            multiline: False
+
+        TextInput:
+            id: target
+            hint_text: "Target"
+            multiline: False
+            input_filter: "float"
+
+        TextInput:
+            id: unit
+            hint_text: "Unit (Hours, KM, Pages...)"
+            multiline: False
+
+        Spinner:
+            id: task_type
+            text: "fixed"
+            values: ("fixed", "growing")
+
+        TextInput:
+            id: growth
+            hint_text: "Growth %"
+            multiline: False
+            input_filter: "float"
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+
+            Button:
+                text: "Save"
+                on_release:
+                    root.save_task()
+
+            Button:
+                text: "Cancel"
+                on_release:
+                    root.go_back()
