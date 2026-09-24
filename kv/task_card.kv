@@ -7,18 +7,26 @@
     padding: dp(10), dp(10)
     size_hint_y: None
     height: dp(100)
+    color: 1, 1, 1, 1
+    background_normal: ''
+    background_color: 0, 0, 0, 0
     canvas.before:
         Color:
-            rgba: .6,.6,.6,1
-
+            rgba: 1, 1, 1, 0.12
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [15]
+            radius: [dp(12),]
+        Color:
+            rgba: 1, 1, 1, 0.25
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+            width: dp(1)
+
 
     BoxLayout:
         orientation: "horizontal"
-        padding: dp(25)
+        padding: dp(10)
 
         Label:
             text: root.title.title()
@@ -47,22 +55,56 @@
         spacing: dp(5)
 
         Button:
-            text: "Done"
+            text: "Completed" if root.completed else "Done"
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            disabled: root.completed
+
+            canvas.after:
+                Color:
+                    rgba: 0, 0.67, 0.7, 1
+                Line:
+                    rounded_rectangle: self.x, self.y, self.width, self.height, dp(25)
+
             on_release:
                 root.show_complete_popup()
 
         Button:
             text: "Edit"
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            canvas.after:
+                Color:
+                    rgba: 0, 0.67, 0.7, 1
+                Line:
+                    rounded_rectangle: self.x, self.y, self.width, self.height, dp(25)
             on_release:
                 root.edit_task()
 
         Button:
             text: "Delete"
+
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            canvas.after:
+                Color:
+                    rgba: 0, 0.67, 0.7, 1
+                Line:
+                    rounded_rectangle: self.x, self.y, self.width, self.height, dp(25)
+
             on_release:
                 root.show_delete_popup()
-
+    
         Button:
-            text: "Completed" if root.completed else "Pending"
-            disabled: root.completed
+            text: "Timer"
+            
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            canvas.after:
+                Color:
+                    rgba: 0, 0.67, 0.7, 1
+                Line:
+                    rounded_rectangle: self.x, self.y, self.width, self.height, dp(25)
+
             on_release:
-                root.show_complete_popup()
+                root.start_timer()

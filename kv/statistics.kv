@@ -5,10 +5,11 @@
 
     BoxLayout:
         orientation: "vertical"
-
-        # ==========================
-        # Fixed Header
-        # ==========================
+        canvas.before:
+            Rectangle:
+                source: "assets/image.png"
+                pos: self.pos
+                size: self.size
 
         Label:
             text: "Progress Details"
@@ -16,10 +17,6 @@
             bold: True
             size_hint_y: None
             height: dp(60)
-
-        # ==========================
-        # Scrollable Content
-        # ==========================
 
         ScrollView:
 
@@ -30,10 +27,6 @@
                 size_hint_y: None
                 height: self.minimum_height
 
-                # ==========================
-                # Progress Card
-                # ==========================
-
                 BoxLayout:
                     orientation: "vertical"
                     padding: dp(15)
@@ -41,14 +34,22 @@
                     size_hint_y: None
                     height: dp(130)
 
+                    color: 1, 1, 1, 1
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
                     canvas.before:
                         Color:
-                            rgba: .15, .15, .15, 1
-
+                            rgba: 1, 1, 1, 0.12
                         RoundedRectangle:
                             pos: self.pos
                             size: self.size
-                            radius: [15]
+                            radius: [dp(12),]
+                        Color:
+                            rgba: 1, 1, 1, 0.25
+                        Line:
+                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                            width: dp(1)
+
 
                     BoxLayout:
                         size_hint_y: None
@@ -70,10 +71,6 @@
                         max: 100
                         value: float(progress.text.replace("%","").strip() or "0")
 
-                # ==========================
-                # Statistics Card
-                # ==========================
-
                 GridLayout:
                     cols: 1
                     spacing: dp(8)
@@ -81,14 +78,22 @@
                     size_hint_y: None
                     height: dp(250)
 
+                    color: 1, 1, 1, 1
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
                     canvas.before:
                         Color:
-                            rgba: .15, .15, .15, 1
-
+                            rgba: 1, 1, 1, 0.12
                         RoundedRectangle:
                             pos: self.pos
                             size: self.size
-                            radius: [15]
+                            radius: [dp(12),]
+                        Color:
+                            rgba: 1, 1, 1, 0.25
+                        Line:
+                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                            width: dp(1)
+
 
                     BoxLayout:
 
@@ -181,10 +186,6 @@
                             halign: "right"
                             text_size: self.size
 
-                # ==========================
-                # Highest Growing Task
-                # ==========================
-
                 BoxLayout:
                     orientation: "vertical"
                     padding: dp(15)
@@ -192,14 +193,22 @@
                     size_hint_y: None
                     height: dp(90)
 
+                    color: 1, 1, 1, 1
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
                     canvas.before:
                         Color:
-                            rgba: .15, .15, .15, 1
-
+                            rgba: 1, 1, 1, 0.12
                         RoundedRectangle:
                             pos: self.pos
                             size: self.size
-                            radius: [15]
+                            radius: [dp(12),]
+                        Color:
+                            rgba: 1, 1, 1, 0.25
+                        Line:
+                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                            width: dp(1)
+
 
                     Label:
                         text: "Highest Growing Task"
@@ -226,14 +235,30 @@
                     size_hint_y: None
                     height: dp(10)
 
-        # ==========================
-        # Fixed Bottom Button
-        # ==========================
-
         Button:
             text: "Back"
-            size_hint_y: None
-            height: dp(55)
+            size_hint: None, None
+            width: dp(100)
+            height: dp(40)
+            pos_hint: {"center_x": 0.5}
+
+            color: 0.8, 0.9, 0.9, 1
+            background_normal: ''
+            background_color: 0, 0, 0, 0
+
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.08
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(20),]
+
+                Color:
+                    rgba: 0, 0.67, 0.7, 0.6
+                Line:
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(20))
+                    width: dp(1.2)
 
             on_release:
                 root.manager.current = "dashboard"

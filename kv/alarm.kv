@@ -1,0 +1,66 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<AlarmScreen>:
+
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Rectangle:
+                source: "assets/image.png"
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "My Alarm"
+            font_size: sp(25)
+            size_hint_y: None
+            height: dp(40)
+
+        Label:
+            text: "Not completed"
+            font_size: sp(25)
+            size_hint_y: None
+            height: dp(40)
+        
+        ScrollView:
+
+            BoxLayout:
+                id: alarm_container
+                orientation: "vertical"
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
+
+        Button:
+            text: "+ Add Alarm"
+            size_hint_y: None
+            height: dp(45)
+            
+            background_normal: ''
+            background_color: 0, 0, 0, 0
+            color: 0.8, 0.9, 0.9, 1
+
+            on_release:
+                root.manager.current = "add_alarm"
+                
+        Button:
+            text: "Back"
+            size_hint: None, None
+            width: dp(100)
+            height: dp(40)
+            pos_hint: {"center_x": 0.5}
+
+            background_normal: ''
+            background_color: 0, 0, 0, 0
+            color: 0.8, 0.9, 0.9, 1
+
+            canvas.after:
+                Color:
+                    rgb: 1, 1, 1, 0.9
+                Line:
+                    width: 1.2
+                    rectangle: (self.x, self.y, self.width, self.height)
+
+            on_release:
+                root.manager.current = "dashboard"

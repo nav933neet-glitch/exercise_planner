@@ -1,0 +1,69 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<AddAlarmScreen>:
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(10)
+        padding: dp(15)
+
+        Label:
+            text: "Alarm Time"
+            size_hint_y: None
+            height: dp(25)
+
+        TextInput:
+            id: alarm_time
+            hint_text: "Example: 07:00"
+            multiline: False
+            size_hint_y: None
+            height: dp(40)
+
+        Label:
+            text: "Message"
+            size_hint_y: None
+            height: dp(25)
+
+        TextInput:
+            id: alarm_message
+            hint_text: "Example: Morning Exercise"
+            multiline: False
+            size_hint_y: None
+            height: dp(40)
+
+        Label:
+            text: "Alarm Type"
+            size_hint_y: None
+            height: dp(25)
+
+        TextInput:
+            id: alarm_type
+            hint_text: "Example: daily"
+            multiline: False
+            size_hint_y: None
+            height: dp(40)
+
+        Label:
+            text: "Enabled"
+            size_hint_y: None
+            height: dp(25)
+
+        Switch:
+            id: alarm_enabled
+            size_hint_y: None
+            height: dp(40)
+
+        Button:
+            text: "Save Alarm"
+            size_hint_y: None
+            height: dp(45)
+            on_release:
+                root.save_alarm()
+
+        Button:
+            text: "Cancel"
+            size_hint_y: None
+            height: dp(45)
+            on_release:
+                root.cancel()

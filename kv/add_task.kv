@@ -1,57 +1,244 @@
 #:import dp kivy.metrics.dp
 #:import sp kivy.metrics.sp
 
+
+<SpinnerOption>:
+    color: 1, 1, 1, 1
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    height: dp(40)
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 0.12
+        Line:
+            rectangle: (self.x, self.y, self.width, self.height)
+            width: dp(0.5)
+
 <AddTaskScreen>:
+    
+    FloatLayout:
+        canvas.before:
+            Rectangle:
+                source: "assets/image.png"
+                pos: self.pos
+                size: self.size
 
-    BoxLayout:
-        orientation: "vertical"
-        padding: dp(20)
-        spacing: dp(12)
-
-        Label:
-            text: "Add New Task"
-            font_size: sp(26)
-            size_hint_y: None
-            height: dp(40)
-
-        TextInput:
-            id: task_name
-            hint_text: "Task Name"
-            multiline: False
-
-        TextInput:
-            id: target
-            hint_text: "Target"
-            multiline: False
-            input_filter: "float"
-
-        TextInput:
-            id: unit
-            hint_text: "Unit (Hours, KM, Pages...)"
-            multiline: False
-
-        Spinner:
-            id: task_type
-            text: "fixed"
-            values: ("fixed", "growing")
-
-        TextInput:
-            id: growth
-            hint_text: "Growth %"
-            multiline: False
-            input_filter: "float"
-
+        # Central Frosted Glass Card
         BoxLayout:
-            size_hint_y: None
-            height: dp(50)
+            orientation: "vertical"
+            size_hint: (0.88, 0.92)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: dp(24)
             spacing: dp(10)
 
-            Button:
-                text: "Save"
-                on_release:
-                    root.save_task()
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 0.12
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [dp(20),]
+                Color:
+                    rgba: 1, 1, 1, 0.2
+                Line:
+                    rounded_rectangle: (self.x, self.y, self.width, self.height, dp(20))
+                    width: dp(1.2)
 
-            Button:
-                text: "Cancel"
-                on_release:
-                    root.go_back()
+
+            Label:
+                text: "Create New Task"
+                font_size: sp(20)
+                bold: True
+                color: 1, 1, 1, 0.95
+                size_hint_y: None
+                height: dp(35)
+
+        
+            TextInput:
+                id: task_name
+                hint_text: "Task Name"
+                multiline: False
+                size_hint_y: None
+                height: dp(42)
+                padding: [dp(12), dp(10)]
+
+                cursor_color: 1, 1, 1, 1
+                foreground_color: 1, 0, 0, 1
+                hint_text_color: 0.7, 0.8, 0.8, 0.6
+                background_active: ''
+                background_normal: ''
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(12),]
+                    Color:
+                        rgba: 1, 1, 1, 0.25
+                    Line:
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                        width: dp(1)
+
+    
+            TextInput:
+                id: target
+                hint_text: "Target"
+                multiline: False
+                input_filter: "float"
+                size_hint_y: None
+                height: dp(42)
+                padding: [dp(12), dp(10)]
+
+                cursor_color: 1, 1, 1, 1
+                foreground_color: 1, 1, 1, 1
+                hint_text_color: 0.7, 0.8, 0.8, 0.6
+                background_active: ''
+                background_normal: ''
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(12),]
+                    Color:
+                        rgba: 1, 1, 1, 0.25
+                    Line:
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                        width: dp(1)
+
+            TextInput:
+                id: unit
+                hint_text: "Unit (Hours, KM, Pages...)"
+                multiline: False
+                size_hint_y: None
+                height: dp(42)
+                padding: [dp(12), dp(10)]
+
+                cursor_color: 1, 1, 1, 1
+                foreground_color: 1, 1, 1, 1
+                hint_text_color: 0.7, 0.8, 0.8, 0.6
+                background_active: ''
+                background_normal: ''
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(12),]
+                    Color:
+                        rgba: 1, 1, 1, 0.25
+                    Line:
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                        width: dp(1)
+
+
+            Spinner:
+                id: task_type
+                text: "Task Type"
+                values: ("fixed", "growing")
+                option_cls: "SpinnerOption"
+                size_hint_y: None
+                height: dp(42)
+
+                color: 1, 1, 1, 1
+                background_normal: ''
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 0.12
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(12),]
+                    Color:
+                        rgba: 1, 1, 1, 0.25
+                    Line:
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                        width: dp(1)
+
+
+            TextInput:
+                id: growth
+                hint_text: "Enter Growth % value"
+                multiline: False
+                input_filter: "float"
+
+                opacity: 1 if root.ids.task_type.text == "growing" else 0
+                disabled: root.ids.task_type.text != "growing"
+                size_hint_y: None
+                height: dp(42) if root.ids.task_type.text == "growing" else dp(0)
+                padding: [dp(12), dp(10)]
+
+                cursor_color: 1, 1, 1, 1
+                foreground_color: 1, 1, 1, 1
+                hint_text_color: 0.7, 0.8, 0.8, 0.6
+                background_active: ''
+                background_normal: ''
+                background_color: 0, 0, 0, 0
+                canvas.before:
+                    Color:
+                        rgba: (1, 1, 1, 0.12) if root.ids.task_type.text == "growing" else (0, 0, 0, 0)
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                        radius: [dp(12),]
+                    Color:
+                        rgba: (1, 1, 1, 0.25) if root.ids.task_type.text == "growing" else (0, 0, 0, 0)
+                    Line:
+                        rounded_rectangle: (self.x, self.y, self.width, self.height, dp(12))
+                        width: dp(1)
+
+            # Flexible Spacer
+            Widget:
+                size_hint_y: 1
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(45)
+                spacing: dp(12)
+
+                Button:
+                    text: "Save"
+
+                    bold: True
+                    color: 1, 1, 1, 1
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
+                    canvas.before:
+                        Color:
+                            rgba: 0, 0.67, 0.7, 1
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(22),]
+
+                    on_release:
+                        root.save_task()
+
+                Button:
+                    text: "Cancel"
+
+                    color: 0.8, 0.9, 0.9, 1
+                    background_normal: ''
+                    background_color: 0, 0, 0, 0
+                    canvas.before:
+                        Color:
+                            rgba: 1, 1, 1, 0.08
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [dp(22),]
+                        Color:
+                            rgba: 0, 0.67, 0.7, 0.6
+                        Line:
+                            rounded_rectangle: (self.x, self.y, self.width, self.height, dp(22))
+                            width: dp(1.2)
+
+                    on_release:
+                        root.go_back()

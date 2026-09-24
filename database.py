@@ -8,7 +8,9 @@ class Database:
         self.connection = sqlite3.connect("database/app.db")
         self.connection.row_factory = sqlite3.Row
         self.cursor = self.connection.cursor()
+
         self.create_tables()
+        self.add_timer_columns()
         self.initialize_settings()
 
     def create_tables(self):
@@ -21,7 +23,11 @@ class Database:
                 task_type TEXT,
                 growth_percent REAL,
                 completed_today INTEGER DEFAULT 0,
-                created_at TEXT
+                created_at TEXT,
+
+                timer_remaining INTEGER DEFAULT 0,
+                timer_status TEXT DEFAULT 'idle',
+                timer_started_at TEXT
             )
         """)
         self.cursor.execute("""
@@ -43,6 +49,14 @@ class Database:
                 value TEXT
             )
             """)
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS alarms(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            alarm_type TEXT,
+            alarm_time TEXT,
+            message TEXT,
+            enabled INTEGER
+            )""")
         self.connection.commit()
 
     def add_task(self, title, target, unit, task_type, growth_percent, created_at):
@@ -101,7 +115,7 @@ class Database:
         task_type = task["task_type"]
 
         if task_type == "growing":
-            new_target = target * (1 + growth / 100)
+            new_target = round(target * (1 + growth / 100), 2)
             self.cursor.execute(
                 "UPDATE tasks SET target=?, completed_today=1 WHERE id=?",
                 (new_target, task_id),
@@ -169,32 +183,41 @@ class Database:
         return statistics
 
     def get_current_streak(self):
-        self.cursor.execute(
-            "SELECT DISTINCT history_date FROM task_history WHERE completed = 1 ORDER BY history_date DESC"
-        )
-        dates = [row["history_date"] for row in self.cursor.fetchall()]
+        self.cursor.execute("""
+        SELECT history_date FROM task_history GROUP BY history_date HAVING COUNT(*) = SUM(completed)ORDER BY
+          history_date DESC
+        """)
+        rows = self.cursor.fetchall()
 
-        if not dates:
+        if not rows:
             return 0
-        dates = set(dates)
-        today = date.today()
-        streak = 0
-        current = today
+        completed_dates = {
+            row["history_date"] for row in rows
+        }
 
-        while current.isoformat() in dates:
+        today = date.today()
+        yesterday = today - timedelta(days=1)
+        today_completed = today.isoformat() in completed_dates
+
+        streak = 0
+        current = yesterday
+
+        while current.isoformat() in completed_dates:
             streak += 1
             current -= timedelta(days=1)
+        if today_completed:
+            streak += 1
 
         return streak
 
     def get_best_streak(self):
-        self.cursor.execute(
-            " SELECT DISTINCT history_date FROM task_history WHERE completed = 1 ORDER BY history_date"
-        )
+        self.cursor.execute("""
+            SELECT history_date FROM task_history GROUP BY history_date HAVING COUNT(*) = SUM(completed) ORDER BY history_date
+        """)
         rows = self.cursor.fetchall()
+
         if not rows:
             return 0
-
         dates = [date.fromisoformat(row["history_date"]) for row in rows]
         best = 1
         current = 1
@@ -213,17 +236,62 @@ class Database:
         tasks = self.get_tasks()
 
         for task in tasks:
-            self.cursor.execute(
-                "SELECT id FROM task_history WHERE task_id=? AND history_date=?",
-                (task["id"], today),
-            )
+            self.cursor.execute("SELECT id FROM task_history WHERE task_id=? AND history_date=?",
+                (task["id"], today),)
             exists = self.cursor.fetchone()
 
             if exists:
                 continue
-            self.cursor.execute(
-                "INSERT INTO task_history (task_id, history_date, target, completed) VALUES(?,?,?,0)",
-                (task["id"], today, task["target"]),
-            )
+            self.cursor.execute("INSERT INTO task_history (task_id, history_date, target, completed) VALUES(?,?,?,0)",
+                (task["id"], today, task["target"]),)
+        self.connection.commit()
 
+    def add_timer_columns(self):
+        columns = [
+            ("timer_remaining", "INTEGER DEFAULT 0"),
+            ("timer_status", "TEXT DEFAULT 'idle'"),
+            ("timer_started_at", "TEXT")
+        ]
+
+        for column, definition in columns:
+            try:
+                self.cursor.execute(
+                    f"ALTER TABLE tasks ADD COLUMN {column} {definition}"
+                )
+            except sqlite3.OperationalError:
+                pass
+
+        self.connection.commit()
+
+    def save_timer(self, task_id, remaining_seconds, status):
+        self.cursor.execute("UPDATE tasks SET timer_remaining=?, timer_status=? WHERE id=?",
+            (remaining_seconds, status, task_id))
+        self.connection.commit()
+
+    def get_timer(self, task_id):
+        self.cursor.execute("SELECT timer_remaining, timer_status, timer_started_at FROM tasks WHERE id=?", (task_id,))
+        return self.cursor.fetchone()
+
+    def reset_timer(self, task_id):
+        self.cursor.execute("UPDATE tasks SET timer_remaining=0, timer_status='idle', timer_started_at=NULL WHERE id=?",
+            (task_id,))
+        self.connection.commit()
+
+    def add_alarm(self, alarm_type, alarm_time, message, enabled):
+        self.cursor.execute(
+            """INSERT INTO alarms(alarm_type, alarm_time, message, enabled) VALUES (?, ?, ?, ?)""",
+            (alarm_type, alarm_time, message, enabled),
+        )
+        self.connection.commit()
+
+    def get_alarms(self):
+        self.cursor.execute("SELECT * FROM alarms")
+        return self.cursor.fetchall()
+
+    def delete_alarm(self, alarm_id):
+        self.cursor.execute("DELETE FROM alarms WHERE id = ?", (alarm_id,))
+        self.connection.commit()
+
+    def update_alarm_enabled(self, alarm_id, enabled):
+        self.cursor.execute("UPDATE alarms SET enabled = ? WHERE id = ?", (enabled, alarm_id))
         self.connection.commit()

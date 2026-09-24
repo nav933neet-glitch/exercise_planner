@@ -7,20 +7,18 @@
         orientation: "vertical"
         padding: dp(10)
         spacing: dp(10)
-
-        # --------------------
-        # Header
-        # --------------------
+        canvas.before:
+            Rectangle:
+                source: "assets/image.png"
+                pos: self.pos
+                size: self.size
 
         Label:
             text: "My Daily Task"
             font_size: sp(28)
             size_hint_y: None
-            height: dp(50)
+            height: dp(40)
 
-        # --------------------
-        # Scrollable Area
-        # --------------------
 
         ScrollView:
 
@@ -32,6 +30,7 @@
 
                 Label:
                     text: "Fixed Tasks"
+                    bold: True
                     size_hint_y: None
                     height: dp(35)
 
@@ -44,6 +43,7 @@
 
                 Label:
                     text: "Growing Tasks"
+                    bold: True
                     size_hint_y: None
                     height: dp(35)
 
@@ -54,22 +54,65 @@
                     size_hint_y: None
                     height: self.minimum_height
 
-        # --------------------
-        # Floating Button
-        # --------------------
-
-        Button:
-            text: "+ Add Task"
+            
+        BoxLayout:
             size_hint_y: None
-            height: dp(55)
+            height: dp(46)
+            spacing: dp(5)
 
-            on_release:
-                root.add_task()
+            Button:
+                text: "+ Add Task"
+                size_hint_y: None
+                height: dp(45)
 
-        Button:
-            text: "Progress Details"
-            size_hint_y: None
-            height: dp(50)
+                background_color: 1, 1, 1, .45
+                background_normal: ''
+                background_down: ''
+                color: 1, 1, 1, 1
+                canvas.after:
+                    Color:
+                        rgb: 1, 1, 1, 0.9
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
 
-            on_release:
-                root.open_statistics()
+                on_release:
+                    root.add_task()
+
+            Button:
+                text: "Progress Details"
+                size_hint_y: None
+                height: dp(45)
+
+                background_color: 1, 1, 1, .45
+                background_normal: ''
+                background_down: ''
+                color: 1, 1, 1, 1
+                canvas.after:
+                    Color:
+                        rgb: 1, 1, 1, 0.9
+                    Line:
+                        width: 1.2
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                on_release:
+                    root.open_statistics()
+
+           # Button:
+            #    text: "Alarm"
+            #    size_hint_y: None
+            #    height: dp(45)
+
+            #    background_color: 1, 1, 1, .45
+            #    background_normal: ''
+            #    background_down: ''
+            #    color: 1, 1, 1, 1
+            #    canvas.after:
+            #        Color:
+            #            rgb: 1, 1, 1, 0.9
+            #        Line:
+            #            width: 1.2
+            #            rectangle: (self.x, self.y, self.width, self.height)
+
+            #    on_release:
+            #        root.open_alarm()

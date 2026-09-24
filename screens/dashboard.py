@@ -71,5 +71,8 @@ class DashboardScreen(Screen):
     def open_statistics(self):
         self.manager.current = "statistics"
 
+    def open_alarm(self):
+        self.manager.current = "alarm"
+
     def close(self):
         self.connection.close()

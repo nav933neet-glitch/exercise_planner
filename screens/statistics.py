@@ -22,5 +22,9 @@ class StatisticsScreen(Screen):
         self.ids.total_completed.text = str(stats["total_completed"])
         self.ids.progress.text = f"{stats['progress']} %"
 
-        self.ids.current_streak.text = f"{stats['current_streak']} Days"
-        self.ids.best_streak.text = f"{stats['best_streak']} Days"
+        self.ids.current_streak.text = (f"{stats['current_streak']} Day"
+                                        if stats['current_streak'] == 1
+                                        else f"{stats['current_streak']} Days")
+        self.ids.best_streak.text = (f"{stats['best_streak']} Days"
+                                     if stats['current_streak'] == 1
+                                     else f"{stats['current_streak']} Days")

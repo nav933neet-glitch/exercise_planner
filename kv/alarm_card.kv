@@ -1,0 +1,49 @@
+#:import dp kivy.metrics.dp
+#:import sp kivy.metrics.sp
+
+<AlarmCard>:
+    orientation: "vertical"
+    spacing: dp(8)
+    padding: dp(10), dp(10)
+    size_hint_y: None
+    height: dp(100)
+
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_y: None
+        height: dp(80)
+
+        BoxLayout:
+            orientation: "horizontal"
+
+            Label:
+                text: root.message
+
+            Widget
+
+            Label:
+                text: root.alarm_time
+
+            Widget
+
+            Button:
+                text: "ON/OFF"
+                on_release:
+                    root.toggle_alarm()
+
+        BoxLayout:
+
+            Label:
+                text: root.alarm_type
+
+            Widget
+
+            Label:
+                text: "ON" if root.enabled == 1 else "OFF"
+
+            Widget
+
+            Button:
+                text: "Delete"
+                on_release:
+                    root.delete_alarm()
